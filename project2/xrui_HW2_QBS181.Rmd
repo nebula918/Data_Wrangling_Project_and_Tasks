@@ -1,0 +1,118 @@
+---
+title: "qbs181_ĥw2"
+author: "Xiangyun Rui"
+date: "10/23/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(RODBC)
+library(dplyr)
+library(sqldf)
+library(ggplot2)
+```
+
+
+```{r setup, include=FALSE}
+myconn<-odbcConnect("qbs181","xrui","xrui@qbs181")
+```
+
+```{r}
+#1
+q1 <- sqlQuery(myconn, "select * from Phonecall")
+head(q1)
+q2 <- sqlQuery(myconn, "select A.*,B.* from Phonecall A inner join Phonecall_Encounter B ON A.tri_CustomerIDEntityReference=B.CustomerId")
+head(q2)
+
+q2$EnrollmentGroup[q2$EncounterCode == 125060000] <- "Clinical Alert"
+q2$EnrollmentGroup[q2$EncounterCode == 125060001] <- "Health Coaching"
+q2$EnrollmentGroup[q2$EncounterCode == 125060002] <- "Technical Question"
+q2$EnrollmentGroup[q2$EncounterCode == 125060003] <- "Administrative"
+q2$EnrollmentGroup[q2$EncounterCode == 125060004] <- "Other"
+q2$EnrollmentGroup[q2$EncounterCode == 125060005] <- "Lack of Engagement"
+head(q2,10)
+```
+
+```{r}
+#2
+table(q2$EnrollmentGroup)
+#or
+q3 <- sqldf("select EnrollmentGroup, count(EnrollmentGroup) as Number 
+from q2
+group by EnrollmentGroup")
+q3
+```
+
+```{r}
+#3
+q4 <-sqlQuery(myconn,"select * from PhoneCall_Encounter")
+q5 <-sqlQuery(myconn,"select * from CallDuration")
+q6 <-merge(q4, q5, by.x = "CustomerId", by.y = "tri_CustomerIDEntityReference")
+head(q6,10)
+```
+```{r}
+#4
+q6$CallTypes[q6$CallType == 1] <- "Inbound"
+q6$CallTypes[q6$CallType == 2] <- "Outbound"
+q6$CallOutcomes[q6$CallOutcome==1] <- "No response"
+q6$CallOutcomes[q6$CallOutcome==2] <- "Left voice mail"
+q6$CallOutcomes[q6$CallOutcome==3] <- "Successful"
+table(q6$CallOutcome)
+table(q6$CallType)
+head(q6,10)
+
+
+q7<-sqldf("select EnrollmentGroup,avg(CallDuration) as AVG_CALL from q2
+group by EnrollmentGroup")
+q7
+```
+
+```{r}
+#5
+q8<- sqlQuery(myconn, "select A.*,B.*,C.* from Demographics A inner join Conditions B ON A.contactid=B.tri_patientid inner join TextMessages C ON C.tri_contactid=B.tri_patientid")
+
+head(q8,10)
+q8$TextSentDate<-as.Date(q8$TextSentDate,format="%m/%d/%y")
+
+str(q8$TextSentDate)
+q8$WeekNumber<-strftime(q8$TextSentDate,format="%V")
+head(q8,10)
+
+q9<-sqldf("select count(tri_contactid) as NumMess,WeekNumber
+from q8
+group by WeekNumber")
+q10<- sqldf("select count(SenderName) as SenderType, count(tri_contactid) as NumMess, SenderName, WeekNumber
+from q8
+group by SenderName, WeekNumber")
+head(q10,10)
+q10$SenderName<-as.factor(q10$SenderName)
+
+ggplot(data=q10,aes(x=WeekNumber,y=NumMess,group=q10$SenderName,color=q10$SenderName))+geom_line()+labs(title="Visualization")
+```
+
+```{r}
+q11 <- sqlQuery(myconn, "select A.*,B.* from TextMessages A inner join Conditions B ON A.tri_contactid=B.tri_patientid")
+head(q11,10)
+q11$TextSentDate<-as.Date(q11$TextSentDate,format="%m/%d/%y")
+
+str(q11$TextSentDate)
+q11$WeekNumber<-strftime(q11$TextSentDate,format="%V")
+head(q11,10)
+
+q12<-sqldf("select count(tri_contactid) as NumMess,WeekNumber
+from q11
+group by WeekNumber")
+head(q12,10)
+ggplot(data=q12,aes(x=WeekNumber,y=NumMess))+geom_point()+labs(title="Visualization")
+```
+
+
+
+
+
+
+
+
+
+
+
