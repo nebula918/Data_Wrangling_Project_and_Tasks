@@ -1,0 +1,706 @@
+---
+title: "rui_midterm"
+author: "Xiangyun Rui"
+date: "10/28/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#install.packages("Hmisc")
+#install.packages("SASxport")
+#install.packages("sqldf")
+#install.packages("ISwR")
+library(Hmisc)
+library(SASxport)
+library(sqldf)
+library(stats)
+```
+
+```{r}
+diq <- read.xport("DIQ_I.xpt")
+head(diq)
+#write.csv(diq, "DIQ_I.csv")
+#getwd()
+```
+
+```{r}
+#verify counts
+table(diq$DIQ010)
+sum(is.na(diq$DIQ010))
+table(diq$DID040)#########
+q040 <- table(diq$DID040[diq$DID040 <= 78 & diq$DID040 >= 2])
+sum(q040)
+sum(is.na(diq$DID040))
+table(diq$DIQ160)
+sum(is.na(diq$DIQ160))
+table(diq$DIQ170)
+sum(is.na(diq$DIQ170))
+table(diq$DIQ172)
+sum(is.na(diq$DIQ172))
+table(diq$DIQ175A)
+sum(is.na(diq$DIQ175A))
+table(diq$DIQ175B)
+sum(is.na(diq$DIQ175B))
+table(diq$DIQ175C)
+sum(is.na(diq$DIQ175C))
+table(diq$DIQ175D)
+sum(is.na(diq$DIQ175D))
+table(diq$DIQ175E)
+sum(is.na(diq$DIQ175E))
+table(diq$DIQ175F)
+sum(is.na(diq$DIQ175F))
+table(diq$DIQ175G)
+sum(is.na(diq$DIQ175G))
+table(diq$DIQ175H)
+sum(is.na(diq$DIQ175H))
+table(diq$DIQ175I)
+sum(is.na(diq$DIQ175I))
+table(diq$DIQ175J)
+sum(is.na(diq$DIQ175J))
+table(diq$DIQ175K)
+sum(is.na(diq$DIQ175K))
+table(diq$DIQ175L)
+sum(is.na(diq$DIQ175L))
+table(diq$DIQ175M)
+sum(is.na(diq$DIQ175M))
+table(diq$DIQ175N)
+sum(is.na(diq$DIQ175N))
+table(diq$DIQ175O)
+sum(is.na(diq$DIQ175O))
+table(diq$DIQ175P)
+sum(is.na(diq$DIQ175P))
+table(diq$DIQ175Q)
+sum(is.na(diq$DIQ175Q))
+table(diq$DIQ175R)
+sum(is.na(diq$DIQ175R))
+table(diq$DIQ175S)
+sum(is.na(diq$DIQ175S))
+table(diq$DIQ175T)
+sum(is.na(diq$DIQ175T))
+table(diq$DIQ175U)
+sum(is.na(diq$DIQ175U))
+table(diq$DIQ175V)
+sum(is.na(diq$DIQ175V))
+table(diq$DIQ175W)
+sum(is.na(diq$DIQ175W))
+table(diq$DIQ175X)
+sum(is.na(diq$DIQ175X))
+table(diq$DIQ180)
+sum(is.na(diq$DIQ180))
+table(diq$DIQ050)
+sum(is.na(diq$DIQ050))
+table(diq$DID060)#########
+q060 <- table(diq$DID060[diq$DID060 <= 55 & diq$DID060 >= 1])
+sum(q060)
+sum(is.na(diq$DID060))
+table(diq$DIQ060U)
+sum(is.na(diq$DIQ060U))
+table(diq$DIQ070)
+sum(is.na(diq$DIQ070))
+table(diq$DIQ230)
+sum(is.na(diq$DIQ230))
+table(diq$DIQ240)
+sum(is.na(diq$DIQ240))
+table(diq$DID250)#########
+q250 <- table(diq$DID250[diq$DID250 <= 60 & diq$DID250 >= 1])
+sum(q250)
+sum(is.na(diq$DID250))
+table(diq$DID260)########
+q260 <- table(diq$DID260[diq$DID260 <= 15 & diq$DID260 >= 1])
+sum(q260)
+sum(is.na(diq$DID260))
+table(diq$DIQ260U)
+sum(is.na(diq$DIQ260U))
+table(diq$DIQ275)
+sum(is.na(diq$DIQ275))
+table(diq$DIQ280)##############
+q280 <- table(diq$DIQ280[diq$DIQ280 <= 18.5 & diq$DIQ280 >= 2])
+sum(q280)
+sum(is.na(diq$DIQ280))
+table(diq$DIQ291)
+sum(is.na(diq$DIQ291))
+table(diq$DIQ300S)############
+q300s <- table(diq$DIQ300S[diq$DIQ300S <= 201 & diq$DIQ300S >= 80])
+sum(q300s)
+sum(is.na(diq$DIQ300S))
+table(diq$DIQ300D)###########
+q300d <- table(diq$DIQ300D[diq$DIQ300D <= 251 & diq$DIQ300D >= 17])
+sum(q300d)
+sum(is.na(diq$DIQ300D))
+table(diq$DID310S)##########
+q310s <- table(diq$DID310S[diq$DID310S <= 175 & diq$DID310S >= 80])
+sum(q310s)
+sum(is.na(diq$DID310S))
+table(diq$DID310D)##########
+q310d <- table(diq$DID310D[diq$DID310D <= 140 & diq$DID310D >= 18])
+sum(q310d)
+sum(is.na(diq$DID310D))
+table(diq$DID320)###########
+q320 <- table(diq$DID320[diq$DID320 <= 520 & diq$DID320 >= 4])
+sum(q320)
+sum(is.na(diq$DID320))
+table(diq$DID330)###########
+q330 <- table(diq$DID330[diq$DID330 <= 205 & diq$DID330 >= 6])
+sum(q330)
+sum(is.na(diq$DID330))
+table(diq$DID341)############
+q341 <- table(diq$DID341[diq$DID341 <= 34 & diq$DID341 >= 1])
+sum(q341)
+sum(is.na(diq$DID341))
+table(diq$DID350)############
+q350 <- table(diq$DID350[diq$DID350 <= 20 & diq$DID350 >= 1])
+sum(q350)
+sum(is.na(diq$DID350))
+table(diq$DIQ350U)
+sum(is.na(diq$DIQ350U))
+table(diq$DIQ360)
+sum(is.na(diq$DIQ360))
+table(diq$DIQ080)
+sum(is.na(diq$DIQ080))
+```
+All counts are verified, and they are all correct as mentioned in the website.\
+
+1(a) \
+- There are too many NAs. For most of columns, more than 50% responses are missing.
+- There are some numeric columns are stored as chars.\
+- Many of the "code or value" does not make sense when they are not number related, readers have to visit the website each time to understand each code or value in variables.\
+- There is no need to list "Refused" and "Don't Know", these can all be considered as "Missing values".\
+- Missing values should be treated rather than leaving them there.\
+- Some "666" means less than 1 year or less than 1 month, this may confuse people.\
+- The units of measure are not matching in DIQ360, "greater than 2 years", and "less than 1 month".\
+
+
+(b)(c) \
+- I will drop many rows with too much NAs, because too many question responses can ruin the results. I will drop rows with more than 35 NAs within the row.\
+- I will turn chars into numbers by using "as.numeric" for those I need to calculate the mean/median/maximun/minimum. Because if they are not numeric, I would not be able to calculate the mean/median/maximum/minimum values.\
+- I will rename "code or value" using value description, in order to make readers more clear.\
+- I will assign most of "777"s(will explain later for "777"s I do not treat as NAs), and all "999"s to "missing values (NA)"s. Because "Refused" and "Don't know" basically have no difference as missing values. I regroup them in order to make the column look clean.\
+- I will assign all missing values(NAs) to "NULL". Because I think that even we cannot collect full data (with all questions answered) from participants, some information are still valuable. In other words, missing values within columns would not lead me to throw the entire row(participant) away from the dataset. \
+- I will leave the "NULL"s for categorial variables. Same reasoning above.
+- For continuous variables, I will use means or medians to replace "NULL"s as needed, I will explain later (see comments in trunks).\
+- However, the previous change could not be applied to all continuous variables, such as DIQ280, since not everyone tested their A1C level, I decide not to use the mean to apply to all missing values. If I do that, that could lead to huge bias. Same apply to DIQ291, but different reasons, DIQ291 is relevant to DIQ280. It would not make sense if doctors say one's A1C level is not good without even measuring A1C levels.
+- I will replace "Refused" with maximums or minimums for most recent SBP and most recent DBP, because I think that people refuse to answer because they know they are not in good range. So I handle "Refuse"s differently as missing values for some cases.\
+- I will replace "Not specified" with the medians for "what doctors suggest for SBP/DBP", because I think that doctors do not specifically suggest is because those people's SBP/DBP are in good range.
+- I will replace "666" which means less than 1 year with 0.5, and replace "666" which means less than 1 month with 0.\
+- I will assign the "Never"s to 0.
+- For DIQ360, I would rename the code/value "greater than 2 years" as "greater than 24 months".\
+
+
+More detailed reasoning are in codes along with some variables.\
+
+
+2. Clean data (solving the above issues by variables): \
+```{r}
+#Drop rows with too much missing values
+delete.na <- function(diq, n=0){
+  diq[rowSums(is.na(diq)) <= n,]
+}
+diq <- delete.na(diq, 35)
+
+
+#DIQ010
+diq$DIQ010[diq$DIQ010 == 1] <- "Yes"
+diq$DIQ010[diq$DIQ010 == 2] <- "No"
+diq$DIQ010[diq$DIQ010 == 3] <- "Borderline"
+diq$DIQ010[diq$DIQ010 == 9] <- "NULL"
+head(diq$DIQ010,10)
+
+#DID040
+#I can't replace missing values with the mean for this variable, because not all people have diabetes, so if I use the average age to replace missing values, that means all people have diabetes, it will lead to large bias.
+diq$DID040[diq$DID040 <= 78 & diq$DID040 >=2] <- "2-78"
+diq$DID040[diq$DID040 == 80] <- "80 years or older"
+diq$DID040[diq$DID040 == 666] <- "0.5"
+diq$DID040[diq$DID040 == 999] <- "NULL"
+diq$DID040[is.na(diq$DID040)] <- ""
+diq$DID040[diq$DID040 == ""] <- "NULL"
+table(diq$DID040)
+head(diq$DID040,10)
+
+
+#DIQ160
+diq$DIQ160[diq$DIQ160 == 1] <- "Yes"
+diq$DIQ160[diq$DIQ160 == 2] <- "No"
+diq$DIQ160[diq$DIQ160 == 9] <- "NULL"
+diq$DIQ160[is.na(diq$DIQ160)] <- ""
+diq$DIQ160[diq$DIQ160 == ""] <- "NULL"
+head(diq$DIQ160,10)
+
+#DIQ170
+diq$DIQ170[diq$DIQ170 == 1] <- "Yes"
+diq$DIQ170[diq$DIQ170 == 2] <- "No"
+diq$DIQ170[diq$DIQ170 == 9] <- "NULL"
+diq$DIQ170[is.na(diq$DIQ170)] <- ""
+diq$DIQ170[diq$DIQ170 == ""] <- "NULL"
+head(diq$DIQ170,10)
+
+#DIQ172
+diq$DIQ172[diq$DIQ172 == 1] <- "Yes"
+diq$DIQ172[diq$DIQ172 == 2] <- "No"
+diq$DIQ172[diq$DIQ172 == 7] <- "NULL"
+diq$DIQ172[diq$DIQ172 == 9] <- "NULL"
+diq$DIQ172[is.na(diq$DIQ172)] <- ""
+diq$DIQ172[diq$DIQ172 == ""] <- "NULL"
+head(diq$DIQ172,10)
+
+#DIQ175A
+diq$DIQ175A[diq$DIQ175A == 10] <- "Family History"
+diq$DIQ175A[is.na(diq$DIQ175A)] <- ""
+diq$DIQ175A[diq$DIQ175A == ""] <- "NULL"
+head(diq$DIQ175A,10)
+
+#DIQ175B
+diq$DIQ175B[diq$DIQ175B == 11] <- "Overweight"
+diq$DIQ175B[is.na(diq$DIQ175B)] <- ""
+diq$DIQ175B[diq$DIQ175B == ""] <- "NULL"
+head(diq$DIQ175B,10)
+
+#DIQ175C
+diq$DIQ175C[diq$DIQ175C == 12] <- "Age"
+diq$DIQ175C[is.na(diq$DIQ175C)] <- ""
+diq$DIQ175C[diq$DIQ175C == ""] <- "NULL"
+head(diq$DIQ175C,10)
+
+#DIQ175D
+diq$DIQ175D[diq$DIQ175D == 13] <- "Poor diet"
+diq$DIQ175D[is.na(diq$DIQ175D)] <- ""
+diq$DIQ175D[diq$DIQ175D == ""] <- "NULL"
+head(diq$DIQ175D,10)
+
+#DIQ175E
+diq$DIQ175E[diq$DIQ175E == 14] <- "Race"
+diq$DIQ175E[is.na(diq$DIQ175E)] <- ""
+diq$DIQ175E[diq$DIQ175E == ""] <- "NULL"
+head(diq$DIQ175E,10)
+
+#DIQ175F
+diq$DIQ175F[diq$DIQ175F == 15] <- "Baby weight >9 lbs"
+diq$DIQ175F[is.na(diq$DIQ175F)] <- ""
+diq$DIQ175F[diq$DIQ175F == ""] <- "NULL"
+head(diq$DIQ175F,10)
+
+#DIQ175G
+diq$DIQ175G[diq$DIQ175G == 16] <- "Lack of activity"
+diq$DIQ175G[is.na(diq$DIQ175G)] <- ""
+diq$DIQ175G[diq$DIQ175G == ""] <- "NULL"
+head(diq$DIQ175G,10)
+
+#DIQ175H
+diq$DIQ175H[diq$DIQ175H == 17] <- "High blood pressure"
+diq$DIQ175H[is.na(diq$DIQ175H)] <- ""
+diq$DIQ175H[diq$DIQ175H == ""] <- "NULL"
+head(diq$DIQ175H,10)
+
+#DIQ175I
+diq$DIQ175I[diq$DIQ175I == 18] <- "High blood sugar"
+diq$DIQ175I[is.na(diq$DIQ175I)] <- ""
+diq$DIQ175I[diq$DIQ175I == ""] <- "NULL"
+head(diq$DIQ175I,10)
+
+#DIQ175J
+diq$DIQ175J[diq$DIQ175J == 19] <- "High cholesterol"
+diq$DIQ175J[is.na(diq$DIQ175J)] <- ""
+diq$DIQ175J[diq$DIQ175J == ""] <- "NULL"
+head(diq$DIQ175J,10)
+
+#DIQ175K
+diq$DIQ175K[diq$DIQ175K == 20] <- "Hypoglycemic"
+diq$DIQ175K[is.na(diq$DIQ175K)] <- ""
+diq$DIQ175K[diq$DIQ175K == ""] <- "NULL"
+head(diq$DIQ175K,10)
+
+#DIQ175L
+diq$DIQ175L[diq$DIQ175L == 21] <- "Extreme hunger"
+diq$DIQ175L[is.na(diq$DIQ175L)] <- ""
+diq$DIQ175L[diq$DIQ175L == ""] <- "NULL"
+head(diq$DIQ175L,10)
+
+#DIQ175M
+diq$DIQ175M[diq$DIQ175M == 22] <- "Tingling hands/feet"
+diq$DIQ175M[is.na(diq$DIQ175M)] <- ""
+diq$DIQ175M[diq$DIQ175M == ""] <- "NULL"
+head(diq$DIQ175M,10)
+
+#DIQ175N
+diq$DIQ175N[diq$DIQ175N == 23] <- "Blurred vision"
+diq$DIQ175N[is.na(diq$DIQ175N)] <- ""
+diq$DIQ175N[diq$DIQ175N == ""] <- "NULL"
+head(diq$DIQ175N,10)
+
+#DIQ175O
+diq$DIQ175O[diq$DIQ175O == 24] <- "Increased fatigue"
+diq$DIQ175O[is.na(diq$DIQ175O)] <- ""
+diq$DIQ175O[diq$DIQ175O == ""] <- "NULL"
+head(diq$DIQ175O,10)
+
+#DIQ175P
+diq$DIQ175P[diq$DIQ175P == 25] <- "Anyone could be at risk"
+diq$DIQ175P[is.na(diq$DIQ175P)] <- ""
+diq$DIQ175P[diq$DIQ175P == ""] <- "NULL"
+head(diq$DIQ175P,10)
+
+#DIQ175Q
+diq$DIQ175Q[diq$DIQ175Q == 26] <- "Doctor warning"
+diq$DIQ175Q[is.na(diq$DIQ175Q)] <- ""
+diq$DIQ175Q[diq$DIQ175Q == ""] <- "NULL"
+head(diq$DIQ175Q,10)
+
+#DIQ175R
+diq$DIQ175R[diq$DIQ175R == 27] <- "Other,specify"
+diq$DIQ175R[is.na(diq$DIQ175R)] <- ""
+diq$DIQ175R[diq$DIQ175R == ""] <- "NULL"
+head(diq$DIQ175R,10)
+
+#DIQ175S
+diq$DIQ175S[diq$DIQ175S == 28] <- "Gestational diabetes"
+diq$DIQ175S[is.na(diq$DIQ175S)] <- ""
+diq$DIQ175S[diq$DIQ175S == ""] <- "NULL"
+head(diq$DIQ175S,10)
+
+#DIQ175T
+diq$DIQ175T[diq$DIQ175T == 29] <- "Frequent urination"
+diq$DIQ175T[is.na(diq$DIQ175T)] <- ""
+diq$DIQ175T[diq$DIQ175T == ""] <- "NULL"
+head(diq$DIQ175T,10)
+
+#DIQ175U
+diq$DIQ175U[diq$DIQ175U == 30] <- "Thirst"
+diq$DIQ175U[is.na(diq$DIQ175U)] <- ""
+diq$DIQ175U[diq$DIQ175U == ""] <- "NULL"
+head(diq$DIQ175U,10)
+
+#DIQ175V
+diq$DIQ175V[diq$DIQ175V == 31] <- "Eating lots of sugar"
+diq$DIQ175V[is.na(diq$DIQ175V)] <- ""
+diq$DIQ175V[diq$DIQ175V == ""] <- "NULL"
+head(diq$DIQ175V,10)
+
+#DIQ175W
+diq$DIQ175W[diq$DIQ175W == 32] <- "Medication"
+diq$DIQ175W[is.na(diq$DIQ175W)] <- ""
+diq$DIQ175W[diq$DIQ175W == ""] <- "NULL"
+head(diq$DIQ175W,10)
+
+#DIQ175X
+diq$DIQ175X[diq$DIQ175X == 33] <- "Polycystic ovarian syndrome"
+diq$DIQ175X[is.na(diq$DIQ175X)] <- ""
+diq$DIQ175X[diq$DIQ175X == ""] <- "NULL"
+head(diq$DIQ175X,10)
+
+#DIQ180
+diq$DIQ180[diq$DIQ180 == 1] <- "Yes"
+diq$DIQ180[diq$DIQ180 == 2] <- "No"
+diq$DIQ180[diq$DIQ180 == 7] <- "NULL"
+diq$DIQ180[diq$DIQ180 == 9] <- "NULL"
+diq$DIQ180[is.na(diq$DIQ180)] <- ""
+diq$DIQ180[diq$DIQ180 == ""] <- "NULL"
+head(diq$DIQ180,10)
+
+#DIQ050
+diq$DIQ050[diq$DIQ050 == 1] <- "Yes"
+diq$DIQ050[diq$DIQ050 == 2] <- "No"
+diq$DIQ050[diq$DIQ050 == 7] <- "NULL"
+diq$DIQ050[diq$DIQ050 == 9] <- "NULL"
+head(diq$DIQ050,10)
+
+#DID060
+#For this variable "how long taking insulin" I use the mean to replace "don't know"s, because "don't know" means they have taken insulin. I cannot apply the average to replace all missing values in this case, because not everyone is taking insulin.  
+#In addition, I convert "less than 1 month" as 0.5 month.
+#Since the average is near 9, which falls into the region "1-55", I reassign those two values into the group "1-55".
+q2 <- sapply(diq$DID060[diq$DID060 <= 55 & diq$DID060 >= 1], as.numeric)
+q2 <- (sum(q2, na.rm = TRUE))/254
+v2 <- round(q2,2)
+diq$DID060[diq$DID060 <= 55 & diq$DID060 >= 1] <- "1-55"
+diq$DID060[diq$DID060 == 666] <- "0.5"
+diq$DID060[diq$DID060 == 999] <- v2
+diq$DID060[diq$DID060 == v2] <- "1-55"
+diq$DID060[is.na(diq$DID060)] <- ""
+diq$DID060[diq$DID060 == ""] <- "NULL"
+head(diq$DID060,10)
+
+
+#DIQ060U
+diq$DIQ060U[diq$DIQ060U == 1] <- "Months"
+diq$DIQ060U[diq$DIQ060U == 2] <- "Years"
+diq$DIQ060U[is.na(diq$DIQ060U)] <- ""
+diq$DIQ060U[diq$DIQ060U == ""] <- "NULL"
+head(diq$DIQ060U,10)
+
+
+
+#DIQ070
+diq$DIQ070[diq$DIQ070 == 1] <- "Yes"
+diq$DIQ070[diq$DIQ070 == 2] <- "No"
+diq$DIQ070[diq$DIQ070 == 7] <- "NULL"
+diq$DIQ070[diq$DIQ070 == 9] <- "NULL"
+diq$DIQ070[is.na(diq$DIQ070)] <- ""
+diq$DIQ070[diq$DIQ070 == ""] <- "NULL"
+head(diq$DIQ070,10)
+
+#DIQ230
+diq$DIQ230[diq$DIQ230 == 1] <- "0.5"
+diq$DIQ230[diq$DIQ230 == 2] <- "1-2"
+diq$DIQ230[diq$DIQ230 == 3] <- "2-5"
+diq$DIQ230[diq$DIQ230 == 4] <- ">5"
+diq$DIQ230[diq$DIQ230 == 5] <- "0"
+diq$DIQ230[diq$DIQ230 == 9] <- "NULL"
+diq$DIQ230[is.na(diq$DIQ230)] <- ""
+diq$DIQ230[diq$DIQ230 == ""] <- "NULL"
+head(diq$DIQ230,10)
+
+#DIQ240
+diq$DIQ240[diq$DIQ240 == 1] <- "Yes"
+diq$DIQ240[diq$DIQ240 == 2] <- "No"
+diq$DIQ240[is.na(diq$DIQ240)] <- ""
+diq$DIQ240[diq$DIQ240 == ""] <- "NULL"
+head(diq$DIQ240,10)
+
+#DID250
+#This variable "Past year how many times seen doctor" I use the average to replace missing values, because I think that it is reasonable that everyone in the study should see doctor. 
+#Since the average is near 4, which falls into the region "1-55", I reassign those two values into the group "1-55".
+q3 <- sapply(diq$DID250[diq$DID250 <= 60 & diq$DID250 >= 0],as.numeric)
+v3 <- round(mean(q3,na.rm = TRUE),2)
+diq$DID250[diq$DID250 <= 60 & diq$DID250 >= 1] <- "1-60 times"
+diq$DID250[diq$DID250 == 0] <- "None"
+diq$DID250[diq$DID250 == 9999] <- "NULL"
+diq$DID250[is.na(diq$DID250)] <- ""
+diq$DID250[diq$DID250 == ""] <- "NULL"
+table(diq$DID250)
+diq$DID250[diq$DID250 == "NULL"] <- v3
+diq$DID250[diq$DID250 == v3] <- "1-60 times"
+head(diq$DID250,10)
+
+#DID260
+#This variable "how often check blood sugar" I use the average to replace missing values, because I think that it is reasonable that everyone in the study should check blood sugar. 
+#Since the average is near 2, which falls into the region "1-15 times", I reassign those two values into the group "1-15 times".
+q4 <- sapply(diq$DID260[diq$DID260 <= 15 & diq$DID260 >= 1],as.numeric)
+v4 <- round(mean(q4,na.rm = TRUE),2)
+diq$DID260[diq$DID260 <= 15 & diq$DID260 >= 1] <- "1-15 times"
+diq$DID260[diq$DID260 == 0] <- "Never"
+diq$DID260[is.na(diq$DID260)] <- ""
+diq$DID260[diq$DID260 == ""] <- "NULL"
+diq$DID260[diq$DID260 == "NULL"] <- v4
+diq$DID260[diq$DID260 == v4] <- "1-15 times"
+table(diq$DID260)
+head(diq$DID260,10)
+
+#DIQ260U
+diq$DIQ260U[diq$DIQ260U == 1] <- "Per day"
+diq$DIQ260U[diq$DIQ260U == 2] <- "Per week"
+diq$DIQ260U[diq$DIQ260U == 3] <- "Per month"
+diq$DIQ260U[diq$DIQ260U == 4] <- "Per year"
+diq$DIQ260U[is.na(diq$DIQ260U)] <- ""
+diq$DIQ260U[diq$DIQ260U == ""] <- "NULL"
+head(diq$DIQ260U,10)
+
+#DIQ275
+diq$DIQ275[diq$DIQ275 == 1] <- "Yes"
+diq$DIQ275[diq$DIQ275 == 2] <- "No"
+diq$DIQ275[diq$DIQ275 == 9] <- "NULL"
+diq$DIQ275[is.na(diq$DIQ275)] <- ""
+diq$DIQ275[diq$DIQ275 == ""] <- "NULL"
+head(diq$DIQ275,10)
+
+#DIQ280
+diq$DIQ280[diq$DIQ280 <= 18.5 & diq$DIQ280 >= 2] <- "A1C 2-18.5"
+diq$DIQ280[diq$DIQ280 == 777] <- "NULL"
+diq$DIQ280[diq$DIQ280 == 999] <- "NULL"
+diq$DIQ280[is.na(diq$DIQ280)] <- ""
+diq$DIQ280[diq$DIQ280 == ""] <- "NULL"
+head(diq$DIQ280,10)
+
+#DIQ291
+diq$DIQ291[diq$DIQ291 == 1] <- "<6"
+diq$DIQ291[diq$DIQ291 == 2] <- "<7"
+diq$DIQ291[diq$DIQ291 == 3] <- "<8"
+diq$DIQ291[diq$DIQ291 == 4] <- "<9"
+diq$DIQ291[diq$DIQ291 == 5] <- "<10"
+diq$DIQ291[diq$DIQ291 == 6] <- "Not specified"
+diq$DIQ291[diq$DIQ291 == 77] <- "NULL"
+diq$DIQ291[diq$DIQ291 == 99] <- "NULL"
+diq$DIQ291[is.na(diq$DIQ291)] <- ""
+diq$DIQ291[diq$DIQ291 == ""] <- "NULL"
+head(diq$DIQ291,10)
+
+#DIQ300S
+#This variable "what was your recent SBP" I use the average to replace missing values and "Don't know"s, because everyone have blood pressure. Also, I use the maximum to replace "Refused", because I think that people refuse to report SBP because they have extremely high blood pressure. 
+#Since the average is near 130, which falls into the region "80-201 SBP", I reassign those values into the group "80-201 SBP". In addition, the max is 201, this value also falls into the region "80-201 SBP", so I reassign that value into the group "80-201 SBP" as well.
+q5 <- sapply(diq$DIQ300S[diq$DIQ300S <= 201 & diq$DIQ300S >= 80],as.numeric)
+v5_avg <- round(mean(q5,na.rm = TRUE),2)
+v5_max <- round(max(q5,na.rm = TRUE),2)
+diq$DIQ300S[diq$DIQ300S <= 201 & diq$DIQ300S >= 80] <- "80-201 SBP"
+diq$DIQ300S[diq$DIQ300S == 7777] <- v5_max
+diq$DIQ300S[diq$DIQ300S == 9999] <- v5_avg
+diq$DIQ300S[is.na(diq$DIQ300S)] <- ""
+diq$DIQ300S[diq$DIQ300S == ""] <- "NULL"
+diq$DIQ300S[diq$DIQ300S == "NULL"] <- v5_avg
+diq$DIQ300S[diq$DIQ300S == v5_avg] <- "80-201 SBP"
+diq$DIQ300S[diq$DIQ300S == v5_max] <- "80-201 SBP"
+table(diq$DIQ300S)
+head(diq$DIQ300S,10)
+
+#DIQ300D
+#This variable "what was your recent DBP" I use the average to replace missing values and "Don't know"s, because everyone have blood pressure. Also, I use the minimum to replace "Refused", because I think that people refuse to report DBP because they have extremely low blood pressure. 
+#Since the average is near 78, which falls into the region "17-251 DBP", I reassign those values into the group "17-251 DBP". In addition, the min value is 17, this value also falls into the region "17-251 DBP", so I reassign that value into the group "17-251 DBP" as well.
+q6 <- sapply(diq$DIQ300D[diq$DIQ300D <= 251 & diq$DIQ300D >= 17],as.numeric)
+v6_avg <- round(mean(q6,na.rm = TRUE),2)
+v6_min <- round(min(q6,na.rm = TRUE),2)
+diq$DIQ300D[diq$DIQ300D <= 251 & diq$DIQ300D >= 17] <- "17-251 DBP"
+diq$DIQ300D[diq$DIQ300D == 7777] <- v6_min
+diq$DIQ300D[diq$DIQ300D == 9999] <- v6_avg
+diq$DIQ300D[is.na(diq$DIQ300D)] <- ""
+diq$DIQ300D[diq$DIQ300D == ""] <- "NULL"
+diq$DIQ300D[diq$DIQ300D == "NULL"] <- v6_avg
+diq$DIQ300D[diq$DIQ300D == v6_avg] <- "17-251 DBP"
+diq$DIQ300D[diq$DIQ300D == v6_min] <- "17-251 DBP"
+table(diq$DIQ300D)
+head(diq$DIQ300D,10)
+
+#DID310S
+#This variable "what does Dr say SBP should be" I use the average to replace missing values and "Don't know"s and "Refused"s, because the Dr's suggestion of SBP would be more stable and consistant comparing to people's SBP. Besides, I would also replace "not specified" with the median, because I think that not specified means thet are in good range.
+#Since the average is near 123, which falls into the region "80-175 SBP", I reassign those values into the group "80-175 SBP". Besides, since the median is near 120, which also falls into the region "80-175 SBP", I reassign those values into the group "80-175 SBP"
+q7 <- sapply(diq$DID310S[diq$DID310S <= 175 & diq$DID310S >= 80],as.numeric)
+v7_avg <- round(mean(q7,na.rm = TRUE),2)
+v7_med <- round(median(q7,na.rm = TRUE),2)
+diq$DID310S[diq$DID310S <= 175 & diq$DID310S >= 80] <- "80-175 SBP"
+diq$DID310S[diq$DID310S == 6666] <- v7_med
+diq$DID310S[diq$DID310S == 7777] <- v7_avg
+diq$DID310S[diq$DID310S == 9999] <- v7_avg
+diq$DID310S[is.na(diq$DID310S)] <- ""
+diq$DID310S[diq$DID310S == ""] <- "NULL"
+diq$DID310S[diq$DID310S == "NULL"] <- v7_avg
+diq$DID310S[diq$DID310S == v7_avg] <- "80-175 SBP"
+diq$DID310S[diq$DID310S == v7_med] <- "80-175 SBP"
+table(diq$DID310S)
+head(diq$DID310S,10)
+
+#DID310D
+#This variable "what does Dr say DBP should be" I use the average to replace missing values and "Don't know"s and "Refused"s, because the Dr's suggestion of DBP would be more stable and consistant comparing to individual's DBP. Besides, I would also replace "not specified" with the median, because I think that not specified means thet are in good range.
+#Since the average is near 77, which falls into the region "18-140 DBP", I reassign those values into the group "18-140 DBP". Besides, since the median is near 80, which also falls into the region "18-140 DBP", I reassign those values into the group "18-140 DBP".
+q8 <- sapply(diq$DID310D[diq$DID310D <= 140 & diq$DID310D >= 18],as.numeric)
+v8_avg <- round(mean(q8,na.rm = TRUE),2)
+v8_med <- round(median(q8,na.rm = TRUE),2)
+diq$DID310D[diq$DID310D <= 140 & diq$DID310D >= 18] <- "18-140 DBP"
+diq$DID310D[diq$DID310D == 6666] <- v8_med
+diq$DID310D[diq$DID310D == 7777] <- v8_avg
+diq$DID310D[diq$DID310D == 9999] <- v8_avg
+diq$DID310D[is.na(diq$DID310D)] <- ""
+diq$DID310D[diq$DID310D == ""] <- "NULL"
+diq$DID310D[diq$DID310D == "NULL"] <- v8_avg
+diq$DID310D[diq$DID310D == v8_avg] <- "18-140 DBP"
+diq$DID310D[diq$DID310D == v8_med] <- "18-140 DBP"
+table(diq$DID310D)
+head(diq$DID310D,10)
+
+#DID320
+#This variable "what was your most recent LDL number" I think "Never heard of LDL" and "Never had cholesterol test" can be combined into one group, because both group never had cholesterol test obviously, so I will assign them to numeric (=0). Also, I use the maximum to replace "Refused", because I think that people refuse to report LDL because they have extremely high LDL numbers.
+#In addition, I will discard dealing with missing values for this variable, because not everyone had taken the cholesterol test, so it would lead too much bias if I assign the mean or median to missing values. In this case, I would leave them as "NULL"s.
+#Since the maximum is 520, which falls into the region "4-520 LDL", I reassign those values into the group "4-520 LDL".
+q9 <- sapply(diq$DID320[diq$DID320 <= 520 & diq$DID320 >= 4],as.numeric)
+v9_max <- round(max(q9,na.rm = TRUE),2)
+diq$DID320[diq$DID320 <= 520 & diq$DID320 >= 4] <- "4-520 LDL"
+diq$DID320[diq$DID320 == 5555] <- 0
+diq$DID320[diq$DID320 == 6666] <- 0
+diq$DID320[diq$DID320 == 7777] <- v9_max
+diq$DID320[diq$DID320 == v9_max] <- "4-520 LDL"
+diq$DID320[diq$DID320 == 9999] <- "NULL"
+diq$DID320[is.na(diq$DID320)] <- ""
+diq$DID320[diq$DID320 == ""] <- "NULL"
+table(diq$DID320)
+head(diq$DID320,10)
+
+#DID330
+#This variable "what does Dr say LDL should be" I will consider "Don't know"s and "Refused"s as missing values. Besides, I would also replace "not specified" with the median, because I think that not specified means thet are in good range.
+#In addition, I will discard dealing with missing values for this variable, because this is related to the previous variable, not everyone had taken the cholesterol test, this may because not everyone need to take the test, so it would not make sense that Dr has suggestion of LDL number for those who never took the test. In this case, I would leave them as "NULL"s.
+#Since the median is near 100, which also falls into the region "6-205 LDL", I reassign those values into the group "6-205 LDL".
+q10 <- sapply(diq$DID330[diq$DID330 <= 205 & diq$DID330 >= 6],as.numeric)
+v10_med <- round(median(q10,na.rm = TRUE),2)
+diq$DID330[diq$DID330 <= 205 & diq$DID330 >= 6] <- "6-205 LDL"
+diq$DID330[diq$DID330 == 6666] <- v10_med
+diq$DID330[diq$DID330 == v10_med] <- "6-205 LDL"
+diq$DID330[diq$DID330 == 7777] <- "NULL"
+diq$DID330[diq$DID330 == 9999] <- "NULL"
+diq$DID330[is.na(diq$DID330)] <- ""
+diq$DID330[diq$DID330 == ""] <- "NULL"
+table(diq$DID330)
+head(diq$DID330,10)
+
+#DID341
+diq$DID341[diq$DID341 <= 34 & diq$DID341 >= 1] <- "1-34 times"
+diq$DID341[diq$DID341 == 0] <- "None"
+diq$DID341[diq$DID341 == 7777] <- "NULL"
+diq$DID341[diq$DID341 == 9999] <- "NULL"
+diq$DID341[is.na(diq$DID341)] <- ""
+diq$DID341[diq$DID341 == ""] <- "NULL"
+head(diq$DID341,10)
+
+#DID350
+diq$DID350[diq$DID350 <= 20 & diq$DID350 >= 1] <- "1-20 times"
+diq$DID350[diq$DID350 == 0] <- "None"
+diq$DID350[diq$DID350 == 7777] <- "NULL"
+diq$DID350[diq$DID350 == 9999] <- "NULL"
+diq$DID350[is.na(diq$DID350)] <- ""
+diq$DID350[diq$DID350 == ""] <- "NULL"
+head(diq$DID350,10)
+
+#DIQ350U
+diq$DIQ350U[diq$DIQ350U == 1] <- "Per day"
+diq$DIQ350U[diq$DIQ350U== 2] <- "Per week"
+diq$DIQ350U[diq$DIQ350U == 3] <- "Per month"
+diq$DIQ350U[diq$DIQ350U == 4] <- "Per year"
+diq$DIQ350U[is.na(diq$DIQ350U)] <- ""
+diq$DIQ350U[diq$DIQ350U == ""] <- "NULL"
+head(diq$DIQ350U,10)
+
+#DIQ360
+#This unit of measure is not unified, it contains both months and years, so I will turn years into months. I will replace the name "greater than 2 years" as "greater than 24 months"
+diq$DIQ360[diq$DIQ360 == 1] <- "<1 month"
+diq$DIQ360[diq$DIQ360 == 2] <- "1-12 months"
+diq$DIQ360[diq$DIQ360 == 3] <- "13-24 months"
+diq$DIQ360[diq$DIQ360 == 4] <- ">24 months"
+diq$DIQ360[diq$DIQ360 == 5] <- "Never"
+diq$DIQ360[diq$DIQ360 == 7] <- "NULL"
+diq$DIQ360[diq$DIQ360 == 9] <- "NULL"
+diq$DIQ360[is.na(diq$DIQ360)] <- ""
+diq$DIQ360[diq$DIQ360 == ""] <- "NULL"
+head(diq$DIQ360,10)
+
+#DIQ080
+diq$DIQ080[diq$DIQ080 == 1] <- "Yes"
+diq$DIQ080[diq$DIQ080 == 2] <- "No"
+diq$DIQ080[diq$DIQ080 == 7] <- "NULL"
+diq$DIQ080[diq$DIQ080 == 9] <- "NULL"
+diq$DIQ080[is.na(diq$DIQ080)] <- ""
+diq$DIQ080[diq$DIQ080 == ""] <- "NULL"
+table(diq$DIQ080)
+
+```
+
+```{r}
+head(diq,10)
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
